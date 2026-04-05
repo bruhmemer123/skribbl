@@ -36,7 +36,9 @@ io.on('connection', (socket) => {
   socket.on('send_clear', () => {
     socket.broadcast.emit('receive_clear');
   })
-
+  socket.on('send-guess', (data) => {
+    io.emit('recieve-guess', data)
+  })
   socket.on('disconnect', () => {
     console.log('User Disconnected');
   })

@@ -1,9 +1,6 @@
-import {io} from "socket.io-client"
 import { useEffect } from "react"
 import Chat from "./Chat"
-const socketUrl = import.meta.env.VITE_SOCKET_URL || (import.meta.env.DEV ? "http://localhost:8080" : window.location.origin)
-const socket = io(socketUrl)
-
+import { socket } from "../utils/socket.js"
 const brushSettings ={
   color: "#000000",
   radius: 5
@@ -53,22 +50,28 @@ const Canvas = () => {
   return (
 
     <div className="min-h-screen flex flex-col justify-center items-center ">
-        <canvas id="canvas" className="bg-white border-4 border-gray-600" width={"800"} height={"600"} onMouseDown={handleMouseMove} onMouseMove={handleMouseMove}></canvas>
-        <Chat />
-        <div className="flex ">
-          <div className="bg-white border-2 border-gray-600 size-12 flex items-center justify-center" onClick={()=>{brushSettings.radius=5}}><div className="bg-black h-2 w-2 rounded-full "></div></div>
-          <div className="bg-white border-2 border-gray-600 size-12 flex items-center justify-center" onClick={()=>{brushSettings.radius=10}}><div className="bg-black h-5 w-5 rounded-full "></div></div>
-          <div className="bg-white border-2 border-gray-600 size-12 flex items-center justify-center" onClick={()=>{brushSettings.radius=15}}><div className="bg-black h-8 w-8 rounded-full "></div></div>
-          <div className="bg-red-600 border-2 border-gray-600 size-12 flex" onClick={()=>{brushSettings.color="#dc2626"}}></div>
-          <div className="bg-blue-600 border-2 border-gray-600 size-12 flex" onClick={()=>{brushSettings.color="#2563eb"}}></div>
-          <div className="bg-black border-2 border-gray-600 size-12 flex" onClick={()=>{brushSettings.color="#000000"}}></div>
-          <div className="bg-white border-2 border-gray-600 size-12 flex" onClick={()=>{brushSettings.color="#ffffff"}}></div>
-          <div className="bg-yellow-400 border-2 border-gray-600 size-12 flex" onClick={()=>{brushSettings.color="#facc15"}}></div>
-          <div className="bg-green-800 border-2 border-gray-600 size-12 flex" onClick={()=>{brushSettings.color="#166534"}}></div>
-          <div className="bg-orange-600 border-2 border-gray-600 size-12 flex" onClick={()=>{brushSettings.color="#ea580c"}}></div>
-          <div className="bg-purple-700 border-2 border-gray-600 size-12 flex" onClick={()=>{brushSettings.color="#7e22ce"}}></div>
-          <button className="bg-white border-2 border-gray-600 size-12 flex" onClick={wipeCanvas}><div className="flex items-center justify-center">Clear</div></button>
+      <div className="flex flex-row items-start gap-6 mb-4">
+        <div className="flex flex-col items-center gap-4">
+          <canvas id="canvas" className="bg-white border-4 border-gray-600" width={"800"} height={"600"} onMouseDown={handleMouseMove} onMouseMove={handleMouseMove}></canvas>
+        
+          <div className="flex flex-wrap justify-center ">
+            <div className="bg-white border-2 border-gray-600 size-12 flex items-center justify-center" onClick={()=>{brushSettings.radius=5}}><div className="bg-black h-2 w-2 rounded-full "></div></div>
+            <div className="bg-white border-2 border-gray-600 size-12 flex items-center justify-center" onClick={()=>{brushSettings.radius=10}}><div className="bg-black h-5 w-5 rounded-full "></div></div>
+            <div className="bg-white border-2 border-gray-600 size-12 flex items-center justify-center" onClick={()=>{brushSettings.radius=15}}><div className="bg-black h-8 w-8 rounded-full "></div></div>
+            <div className="bg-red-600 border-2 border-gray-600 size-12 flex" onClick={()=>{brushSettings.color="#dc2626"}}></div>
+            <div className="bg-blue-600 border-2 border-gray-600 size-12 flex" onClick={()=>{brushSettings.color="#2563eb"}}></div>
+            <div className="bg-black border-2 border-gray-600 size-12 flex" onClick={()=>{brushSettings.color="#000000"}}></div>
+            <div className="bg-white border-2 border-gray-600 size-12 flex" onClick={()=>{brushSettings.color="#ffffff"}}></div>
+            <div className="bg-yellow-400 border-2 border-gray-600 size-12 flex" onClick={()=>{brushSettings.color="#facc15"}}></div>
+            <div className="bg-green-800 border-2 border-gray-600 size-12 flex" onClick={()=>{brushSettings.color="#166534"}}></div>
+            <div className="bg-orange-600 border-2 border-gray-600 size-12 flex" onClick={()=>{brushSettings.color="#ea580c"}}></div>
+            <div className="bg-purple-700 border-2 border-gray-600 size-12 flex" onClick={()=>{brushSettings.color="#7e22ce"}}></div>
+            <button className="bg-white border-2 border-gray-600 size-12 flex" onClick={wipeCanvas}><div className="flex items-center justify-center">Clear</div></button>
+          </div>
         </div>
+          <div ><Chat /></div>
+        </div>
+        
         
     </div>
   )
