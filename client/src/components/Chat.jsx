@@ -11,22 +11,22 @@ const Chat = () => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }
   useEffect(()=>{
-    socket.on('recieve-guess',(data)=>{
+    socket.on('recieve_guess',(data)=>{
       setMessages(prev=>[...prev,data])
     })
-    return ()=>{socket.off('recieve-guess')}
+    return ()=>{socket.off('recieve_guess')}
   },[])
   useEffect(()=>{
     scrollToBottom()
   },[messages])
   const handleKeyDown = (e) => {
     if(e.key === "Enter" && input.trim() !== ""){
-      socket.emit('send-guess', input)
+      socket.emit('send_guess', input)
       setInput("")
     }
   }
   return (
-    <div className="bg-white border-4 border-gray-600 h-[610px] min-w-60 flex flex-col">
+    <div className="bg-white border-4 border-gray-600 h-[610px] w-60 flex flex-col">
       <div className="flex-1 overflow-y-auto">
         {messages.map((msg,i)=>(
           <div key={i} className="mb-1 p-1 bg-gray-100 rounded text-sm">{msg}</div>
