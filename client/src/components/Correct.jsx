@@ -1,9 +1,8 @@
 import { useEffect,useState,useRef } from "react"
 import {socket} from "../utils/socket.js"
 
-const Chat = () => {
+const Correct = () => {
   const [messages,setMessages] = useState([])
-  const [input,setInput] = useState("")
   const chatEndRef = useRef(null)
 
   const scrollToBottom = () => {
@@ -18,12 +17,6 @@ const Chat = () => {
   useEffect(()=>{
     scrollToBottom()
   },[messages])
-  const handleKeyDown = (e) => {
-    if(e.key === "Enter" && input.trim() !== ""){
-      socket.emit('send_guess', input)
-      setInput("")
-    }
-  }
   return (
     <div className="bg-white border-4 border-gray-600 h-[610px] w-60 flex flex-col">
       <div className="flex-1 overflow-y-auto">
@@ -31,10 +24,10 @@ const Chat = () => {
           <div key={i} className="mb-1 p-1 bg-gray-100 rounded text-sm">{msg}</div>
         ))}
         <div ref={chatEndRef} />
+        <div>You have guessed the word!!</div>
       </div>
-      <input type="text" className="w-full h-2 border-2 border-gray-600 p-2" placeholder="Type a message..." value={input} onChange={(e)=>{setInput(e.target.value)}} onKeyDown={handleKeyDown} ></input>
     </div>
   )
 }
 
-export default Chat
+export default Correct

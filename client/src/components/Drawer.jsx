@@ -1,23 +1,21 @@
-import { useEffect } from "react"
-import Chat from "./Chat"
-import { socket } from "../utils/socket.js"
+import { useEffect, useState } from "react";
+import { socket } from "../utils/socket.js";
+import Correct from "./Correct.jsx"
 const brushSettings ={
   color: "#000000",
   radius: 5
 }
-const Canvas = () => {
+const Drawer = () => {
+  const [word, setWord] = useState("Waiting for word...")
   useEffect(() => {
-    socket.on('receive_draw', (data) => {
-      draw(data.x, data.y, data.color, data.radius);
+    socket.on("game_state", (data) => {
+      setWord(data.hiddenWord);
     });
 
-    socket.on('receive_clear', () => {
-      clearCanvas()
-    });
+    socket.emit("get_game_state");
 
     return () => {
-      socket.off('receive_draw');
-      socket.off('receive_clear');
+      socket.off("game_state");
     };
   }, []);
   const draw = (x,y,color,radius) => {
@@ -52,6 +50,7 @@ const Canvas = () => {
     <div className="min-h-screen flex flex-col justify-center items-center ">
       <div className="flex flex-row items-start gap-6 mb-4">
         <div className="flex flex-col items-center gap-4">
+          <div>{word}</div>
           <canvas id="canvas" className="bg-white border-4 border-gray-600" width={"800"} height={"600"} onMouseDown={handleMouseMove} onMouseMove={handleMouseMove}></canvas>
         
           <div className="flex flex-wrap justify-center ">
@@ -69,7 +68,7 @@ const Canvas = () => {
             <button className="bg-white border-2 border-gray-600 size-12 flex" onClick={wipeCanvas}><div className="flex items-center justify-center">Clear</div></button>
           </div>
         </div>
-          <div ><Chat /></div>
+          <div ><Correct /></div>
         </div>
         
         
@@ -77,4 +76,4 @@ const Canvas = () => {
   )
 }
 
-export default Canvas
+export default Drawer
