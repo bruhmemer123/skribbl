@@ -1,23 +1,31 @@
 import { useEffect, useState } from "react";
 import { socket } from "../utils/socket.js";
 import Correct from "./Correct.jsx"
+import { useNavigate } from "react-router";
 const brushSettings ={
   color: "#000000",
   radius: 5
 }
 const Drawer = () => {
+  const [time,setTime]=useState(90)
+  const navigate=useNavigate()
   const [word, setWord] = useState("Waiting for word...")
   useEffect(() => {
+    socket.on("decrement_second",(t)=>{setTime(t)})
     socket.on("game_state", (data) => {
-      setWord(data.hiddenWord);
-    });
-
-    socket.emit("get_game_state");
+      setWord(data.hiddenWord)
+    })
+    socket.on("game_over",()=>{
+      navigate("/Lobby")
+    })
+    socket.emit("get_game_state")
 
     return () => {
-      socket.off("game_state");
-    };
-  }, []);
+      socket.off("game_state")
+      socket.off("game_over")
+      socket.off("decrement_second")
+    }
+  }, [])
   const draw = (x,y,color,radius) => {
     const canvas = document.getElementById("canvas")
     const ctx = canvas.getContext('2d')
@@ -50,7 +58,8 @@ const Drawer = () => {
     <div className="min-h-screen flex flex-col justify-center items-center ">
       <div className="flex flex-row items-start gap-6 mb-4">
         <div className="flex flex-col items-center gap-4">
-          <div>{word}</div>
+          <div className="text-white text-lg">{time}</div>
+          <div className="text-white text-lg">{word}</div>
           <canvas id="canvas" className="bg-white border-4 border-gray-600" width={"800"} height={"600"} onMouseDown={handleMouseMove} onMouseMove={handleMouseMove}></canvas>
         
           <div className="flex flex-wrap justify-center ">

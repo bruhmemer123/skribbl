@@ -8,7 +8,7 @@ const Lobby = () => {
   useEffect(()=>{
       socket.on('recieve_users',(data)=>{
         setUsers(data)
-        //neat security ceheck
+        //neat ceheck to avoid ghost users
         const me = data.find(user => user.userID === socket.id)
         if (!me) {
           navigate("/")
