@@ -1,4 +1,4 @@
-const words = [
+let words = [
   "Superman", "Batman", "Spiderman", "Iron Man", "Wonder Woman", "Wolverine", "Hulk", "Captain America", "Thanos", "Kryptonite",
   "Cape", "Mask", "Shield", "Mjolnir", "Batmobile", "Joker", "Venom", "Deadpool", "Flash", "Aquaman",
   "Minecraft", "Mario", "Controller", "Console", "Creeper", "Pac-Man", "Tetris", "Pikachu", "Headset", "Keyboard",

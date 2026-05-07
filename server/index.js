@@ -6,15 +6,15 @@ import cors from "cors"
 import http from "http"
 import words from "./words.js"
 import { randomInt } from "crypto"
-import { clear } from "console"
 dotenv.config()
 
 const app = express()
 const __dirname = path.resolve()
-const PORT = Number(process.env.PORT) || 8080
+const PORT = Number(process.env.PORT)
 app.use(cors())
 let users = []
 let timeinterval = null
+let gameWords= words
 
 if(process.env.NODE_ENV === "production"){
   app.use(express.static(path.join(__dirname,"../client/dist")))
@@ -42,13 +42,14 @@ const chooseDrawerAndStart = () => {
     gameState.hiddenWord = ""
     gameState.guessers=[]
     gameState.timeRemaining=gameState.timeLimit
+    gameWords=words
     clearInterval(timeinterval)
     io.emit("game_state", gameState)
     return
   }
   gameState.drawerID = users[randomInt(0,users.length)].userID
   gameState.guessers = users.filter((user=>user.userID!==gameState.drawerID))
-  gameState.hiddenWord = words[randomInt(0, words.length)]
+  gameState.hiddenWord = gameWords[randomInt(0, gameWords.length)]
   gameState.state = "playing"
   gameState.timeRemaining=gameState.timeLimit
   io.emit("receive_clear")
@@ -62,6 +63,7 @@ const chooseDrawerAndStart = () => {
       gameState.state = "waiting"
       gameState.hiddenWord = ""
       gameState.guessers=[]
+      gameWords=words
       clearInterval(timeinterval)
       gameState.timeRemaining=gameState.timeLimit
       io.emit("game_state", gameState)
@@ -86,6 +88,7 @@ io.on('connection', (socket) => {
         gameState.hiddenWord = ""
         gameState.guessers=[]
         gameState.timeRemaining=gameState.timeLimit
+        gameWords=words
         clearInterval(timeinterval)
         io.emit("game_state", gameState)
       }
@@ -94,6 +97,10 @@ io.on('connection', (socket) => {
     }
   })
   
+  socket.on("send_words",(data)=>{
+    gameWords=data.split(",")
+    chooseDrawerAndStart()
+  })
   socket.on("send_name", (data) => {
     users.push({ userID: socket.id, name: data })
     io.emit('recieve_users', users)
@@ -113,7 +120,6 @@ io.on('connection', (socket) => {
       io.to(socket.id).emit("game_state", {underscores:underscores, drawerID: gameState.drawerID, state: gameState.state})
     }
   })
-  
   socket.on("start_game", () => {
     if ( gameState.state === "waiting") {
       chooseDrawerAndStart()
@@ -137,7 +143,8 @@ server.listen(PORT, () => console.log(`Server listening on http://localhost:${PO
 
 
 
-//todo:implement timer,when all have guesser/drawer leaves reassign new drawer and new word if enough players(emit a clearcanvas and emit gamestate with another word)
-//add more colors and if possible better ui/ux,change underscore colors to white and increase size a little,imporve lobby if possible,and just maybe a simple score system 
+//todo:
+//add more colors and if possible better ui/ux,imporve lobby if possible,and just maybe a simple score system 
 //+10 for correct guess and like 3 rounds total
 //todo:add an endscreeen
+//todo fix const words issue line 97

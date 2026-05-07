@@ -18,9 +18,13 @@ const HomePage = () => {
   return (
     <div className="min-h-screen bg-indigo-950">
         <input type="text" className="w-full h-2 border-2 border-gray-600 p-2" placeholder="Enter your name..." value={input} onChange={(e)=>{setInput(e.target.value)}} onKeyDown={handleKeyDown}></input>
-        <button className="bg-indigo-500 text-white px-4 py-2 rounded m-4" onClick={useGuest} >Lobby</button>
+        <button className="bg-indigo-500 text-white px-4 py-2 rounded m-4" onClick=
+        {input==""?useGuest:
+        ()=>{socket.emit('send_name', input.trim())
+        navigate("/Lobby")}}>
+        Lobby</button>
     </div>
   )
 }
-
+//add ifcheck to useguest,if data in input field then use that as name
 export default HomePage
