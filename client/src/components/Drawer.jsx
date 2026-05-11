@@ -73,7 +73,12 @@ const Drawer = () => {
             <div className="bg-yellow-400 border-2 border-gray-600 size-12 flex" onClick={()=>{brushSettings.color="#facc15"}}></div>
             <div className="bg-green-800 border-2 border-gray-600 size-12 flex" onClick={()=>{brushSettings.color="#166534"}}></div>
             <div className="bg-orange-600 border-2 border-gray-600 size-12 flex" onClick={()=>{brushSettings.color="#ea580c"}}></div>
-            <div className="bg-purple-700 border-2 border-gray-600 size-12 flex" onClick={()=>{brushSettings.color="#7e22ce"}}></div>
+            <div className="bg-yellow-600 border-2 border-gray-600 size-12 flex" onClick={()=>{brushSettings.color="#7e22ce"}}></div>
+            <div className="bg-purple-700 border-2 border-gray-600 size-12 flex" onClick={()=>{brushSettings.color="#d97706"}}></div>
+            <div className="bg-amber-950 border-2 border-gray-600 size-12 flex" onClick={()=>{brushSettings.color="#451a03"}}></div>
+            <div className="bg-lime-400 border-2 border-gray-600 size-12 flex" onClick={()=>{brushSettings.color="#84cc16"}}></div>
+            <div className="bg-zinc-600 border-2 border-gray-600 size-12 flex" onClick={()=>{brushSettings.color="#52525b"}}></div>
+            <div className="bg-red-400 border-2 border-gray-600 size-12 flex" onClick={()=>{brushSettings.color="#f87171"}}></div>
             <button className="bg-white border-2 border-gray-600 size-12 flex" onClick={wipeCanvas}><div className="flex items-center justify-center">Clear</div></button>
           </div>
         </div>
