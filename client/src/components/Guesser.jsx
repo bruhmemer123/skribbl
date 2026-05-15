@@ -67,7 +67,7 @@ const Guesser = () => {
   return (
 
     <div className="min-h-screen flex flex-col justify-center items-center ">
-      <div className="flex flex-row items-start gap-6 mb-4">
+      <div className="flex flex-col md:flex-row items-start gap-6 mb-4">
         <div className="flex flex-col items-center gap-4">
           <div className="text-white text-lg">{time}</div>
           <div className="text-white text-lg whitespace-pre-wrap">{answer}</div>

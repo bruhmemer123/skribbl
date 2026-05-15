@@ -38,10 +38,25 @@ const Drawer = () => {
     if(e.buttons !== 1) return
     const canvas = document.getElementById("canvas")
     const rect=canvas.getBoundingClientRect()
-    const x=e.clientX-rect.left
-    const y=e.clientY-rect.top
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const x=(e.clientX-rect.left)*scaleX
+    const y=(e.clientY-rect.top)*scaleY
     draw(x,y,brushSettings.color,brushSettings.radius)
     socket.emit('send_draw', {x,y,color:brushSettings.color,radius:brushSettings.radius})
+  }
+  const handleTouchMove = (e) => {
+    const touch = e.touches[0]
+    if (!touch) return
+    const canvas = document.getElementById("canvas")
+    const rect = canvas.getBoundingClientRect()
+    const scaleX = canvas.width/rect.width
+    const scaleY = canvas.height/rect.height
+    const x = (touch.clientX-rect.left)*scaleX
+    const y = (touch.clientY-rect.top)*scaleY
+    
+    draw(x, y, brushSettings.color,brushSettings.radius);
+    socket.emit('send_draw', {x,y,color:brushSettings.color,radius:brushSettings.radius});
   }
   const wipeCanvas = () => {
     clearCanvas()
@@ -56,11 +71,20 @@ const Drawer = () => {
   return (
 
     <div className="min-h-screen flex flex-col justify-center items-center ">
-      <div className="flex flex-row items-start gap-6 mb-4">
+      <div className="flex flex-col md:flex-row items-start gap-6 mb-4">
         <div className="flex flex-col items-center gap-4">
           <div className="text-white text-lg">{time}</div>
           <div className="text-white text-lg">{word}</div>
-          <canvas id="canvas" className="bg-white border-4 border-gray-600" width={"800"} height={"600"} onMouseDown={handleMouseMove} onMouseMove={handleMouseMove}></canvas>
+          <canvas id="canvas" 
+          className="bg-white border-4 border-gray-600" 
+          style={{touchAction:"none"}}
+          width={"800"} 
+          height={"600"} 
+          onMouseDown={handleMouseMove} 
+          onMouseMove={handleMouseMove}
+          onTouchStart={handleTouchMove}
+          onTouchMove={handleTouchMove}
+          ></canvas>
         
           <div className="flex flex-wrap justify-center ">
             <div className="bg-white border-2 border-gray-600 size-12 flex items-center justify-center" onClick={()=>{brushSettings.radius=5}}><div className="bg-black h-2 w-2 rounded-full "></div></div>

@@ -143,7 +143,8 @@ server.listen(PORT, () => console.log(`Server listening on http://localhost:${PO
 
 
 
-//todo:
+//todo:auth/admin/host 
 //add more colors and if possible better ui/ux,imporve lobby if possible,and just maybe a simple score system 
 //+10 for correct guess and like 3 rounds total
 //todo:add an endscreeen 
+//session
